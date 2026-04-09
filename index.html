@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Природа — источник жизни | Гармония с лесом</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a1f18;
+            overflow-x: hidden;
+            color: #f0f7ea;
+            scroll-behavior: smooth;
+        }
+        
+        
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .video-background video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: cover;
+            filter: brightness(0.9) contrast(1.05) saturate(1.15);
+        }
+        
+        
+        @media (prefers-reduced-motion: reduce) {
+            .video-background video {
+                display: none;
+            }
+            body {
+                background: linear-gradient(135deg, #1a4d2e, #0a2a1c);
+            }
+        }
+        
+        .ambient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, rgba(10, 30, 20, 0.4), rgba(0, 10, 5, 0.55));
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+       
+        .glass-card {
+            background: rgba(35, 55, 45, 0.45);
+            backdrop-filter: blur(12px);
+            border-radius: 1.8rem;
+            border: 1px solid rgba(180, 230, 140, 0.35);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
+            transition: transform 0.25s ease, background 0.25s ease;
+        }
+        
+        .glass-card:not(.no-tilt):active {
+            transform: scale(0.98);
+        }
+        
+        @media (min-width: 769px) {
+            .glass-card:not(.no-tilt):hover {
+                background: rgba(55, 85, 65, 0.55);
+                border-color: rgba(200, 245, 140, 0.6);
+                transform: translateY(-4px);
+            }
+        }
+        
+        .no-tilt:active {
+            transform: scale(0.99) !important;
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+       
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            padding: 1rem;
+        }
+        
+        .hero-content {
+            max-width: 950px;
+            padding: 2rem;
+            animation: floatGlow 1s ease-out;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.2rem, 8vw, 5rem);
+            font-weight: 800;
+            background: linear-gradient(125deg, #E9FFDB, #BCEE92);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.8rem;
+        }
+        
+        .hero p {
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            font-weight: 500;
+            color: #f6ffe6;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+            margin-bottom: 1.8rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(115deg, #5fa84a, #337a3f);
+            border: none;
+            padding: 0.9rem 2.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 60px;
+            color: white;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 8px 16px -5px rgba(0,0,0,0.4);
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+        
+        .section {
+            padding: 3.5rem 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section-title {
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(130deg, #DAF6C5, #B2E68C);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .value-card {
+            padding: 1.5rem 1.2rem;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .value-icon {
+            font-size: 2.8rem;
+            color: #c5f0a2;
+            margin-bottom: 1rem;
+        }
+        
+        .value-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+        }
+        
+        .value-card p {
+            line-height: 1.45;
+            color: #f0fce6;
+            font-size: 0.9rem;
+        }
+        
+        .problems-card {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .problems-text {
+            font-size: 1rem;
+            line-height: 1.55;
+            font-weight: 500;
+        }
+        
+        .stat-badge {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.45);
+            border-radius: 50px;
+            padding: 0.25rem 0.9rem;
+            margin: 0.4rem 0.25rem;
+            font-size: 0.8rem;
+        }
+        
+     
+        .solutions-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.8rem 0;
+        }
+        
+        .solution-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .solution-chip {
+            background: rgba(45, 80, 60, 0.65);
+            backdrop-filter: blur(10px);
+            padding: 0.7rem 1.3rem;
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: 1px solid rgba(160, 210, 110, 0.5);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .solution-chip i {
+            font-size: 1.1rem;
+            color: #c5f5a2;
+        }
+        
+        .solution-chip:active {
+            transform: scale(0.97);
+        }
+        
+        .solution-tooltip {
+            position: absolute;
+            bottom: calc(100% + 12px);
+            left: 50%;
+            transform: translateX(-50%) translateY(8px);
+            min-width: 240px;
+            max-width: 280px;
+            background: rgba(35, 55, 45, 0.97);
+            backdrop-filter: blur(16px);
+            border-radius: 1.2rem;
+            padding: 0.8rem 1rem;
+            border: 1px solid rgba(180, 230, 140, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 100;
+            pointer-events: none;
+            text-align: center;
+        }
+        
+        .solution-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid rgba(55, 85, 65, 0.97);
+        }
+        
+        .solution-wrapper:hover .solution-tooltip,
+        .solution-wrapper:active .solution-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .tooltip-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #d8ffb0;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .tooltip-text {
+            font-size: 0.75rem;
+            line-height: 1.4;
+            color: #f0f7ea;
+        }
+        
+      
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            max-width: 450px;
+            width: 100%;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            color: #f0f7ea;
+            cursor: pointer;
+            padding: 0 0.5rem;
+        }
+        
+        .modal-body {
+            line-height: 1.55;
+            font-size: 0.9rem;
+        }
+        
+        
+        .facts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .fact-card {
+            padding: 1.2rem;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .fact-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #b9f0a0;
+            margin-bottom: 0.4rem;
+        }
+        
+        .fact-card p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        footer {
+            background: rgba(15, 35, 25, 0.65);
+            backdrop-filter: blur(12px);
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(140, 200, 90, 0.3);
+            margin-top: 1rem;
+        }
+        
+        .go-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(40, 80, 55, 0.8);
+            backdrop-filter: blur(10px);
+            width: 44px;
+            height: 44px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            border: 1px solid rgba(170, 220, 110, 0.7);
+            z-index: 99;
+        }
+        
+        .go-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .go-top:active {
+            transform: scale(0.92);
+        }
+        
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @keyframes floatGlow {
+            0% { opacity: 0; transform: translateY(25px) scale(0.96);}
+            100% { opacity: 1; transform: translateY(0) scale(1);}
+        }
+        
+        
+        .floating-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            font-size: 0.9rem;
+            opacity: 0;
+            animation: floatNature 22s linear infinite;
+        }
+        
+        @keyframes floatNature {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            15% { opacity: 0.2; }
+            85% { opacity: 0.15; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+        
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            .section {
+                padding: 2.5rem 0;
+            }
+            .section-title {
+                margin-bottom: 1.5rem;
+            }
+            .grid-4 {
+                gap: 1rem;
+            }
+            .value-card {
+                padding: 1.2rem;
+            }
+            .value-icon {
+                font-size: 2.2rem;
+            }
+            .value-card h3 {
+                font-size: 1.2rem;
+            }
+            .problems-card {
+                padding: 1.2rem;
+            }
+            .problems-text {
+                font-size: 0.9rem;
+            }
+            .facts-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .solution-chip {
+                padding: 0.55rem 1rem;
+                font-size: 0.75rem;
+            }
+            .solution-chip i {
+                font-size: 0.9rem;
+            }
+            .modal-content {
+                padding: 1.2rem;
+            }
+            .modal-header h3 {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* Убираем эффект наклона на мобильных полностью */
+        @media (max-width: 768px) {
+            .glass-card:not(.no-tilt):hover {
+                transform: none;
+            }
+        }
+        
+        /* Для очень маленьких экранов */
+        @media (max-width: 480px) {
+            .hero-content {
+                padding: 1.2rem;
+            }
+            .btn-primary {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            .solution-tooltip {
+                min-width: 200px;
+                max-width: 240px;
+                padding: 0.6rem 0.8rem;
+            }
+            .tooltip-title {
+                font-size: 0.8rem;
+            }
+            .tooltip-text {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Курсив только для текста "Вдохновляющие факты о природе" */
+        .italic-facts-title {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="video-background">
+    <video autoplay loop muted playsinline id="forestVideo" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%231a4d2e' width='100' height='100'/%3E%3C/svg%3E">
+        <source src="https://files.catbox.moe/ykl6xe.mov" type="video/mp4">
+        <source src="https://cdn.pixabay.com/video/2023/06/27/169435-838285831_tiny.mp4" type="video/mp4">
+    </video>
+</div>
+<div class="ambient-overlay"></div>
+
+<div class="go-top" id="goTopBtn">
+    <i class="fas fa-arrow-up"></i>
+</div>
+
+<section class="hero">
+    <div class="hero-content glass-card">
+        <h1>🌿 Природа — источник жизни</h1>
+        <p>Сохраняя природу сегодня, мы заботимся о будущем завтрашнего дня</p>
+        <button class="btn-primary" id="learnMoreBtn">Узнать больше <i class="fas fa-leaf"></i></button>
+    </div>
+</section>
+
+<section class="section" id="valueSection">
+    <div class="container">
+        <h2 class="section-title fade-up">🌱 Значение природы</h2>
+        <div class="grid-4">
+            <div class="value-card glass-card fade-up" data-modal="modal-air">
+                <div class="value-icon"><i class="fas fa-wind"></i></div>
+                <h3>Чистый воздух</h3>
+                <p>Леса и океаны — лёгкие планеты. Один гектар леса поглощает до 50 кг CO₂ и выделяет кислород для 200 человек.</p>
+                <small style="opacity:0.65; font-size:0.7rem;">🔍 Нажмите</small>
+            </div>
+            <div class="value-card glass-card fade-up" data-modal="modal-water">
+                <div class="value-icon"><i class="fas fa-water"></i></div>
+                <h3>Пресная вода</h3>
+                <p>Только 2.5% воды на Земле — пресная, и лишь 1% доступен человеку. Реки, озёра и болота — природные фильтры.</p>
+                <small style="opacity:0.65; font-size:0.7rem;">🔍 Нажмите</small>
+            </div>
+            <div class="value-card glass-card fade-up" data-modal="modal-climate">
+                <div class="value-icon"><i class="fas fa-mountain"></i></div>
+                <h3>Климат и горы</h3>
+                <p>Горы — «водонапорные башни» мира, они дают 60-80% пресной воды. Ледники могут исчезнуть к 2050 году.</p>
+                <small style="opacity:0.65; font-size:0.7rem;">🔍 Нажмите</small>
+            </div>
+            <div class="value-card glass-card fade-up" data-modal="modal-food">
+                <div class="value-icon"><i class="fas fa-seedling"></i></div>
+                <h3>Пища и биоразнообразие</h3>
+                <p>75% мирового продовольствия дают всего 12 видов растений. Потеря опылителей угрожает 35% урожая.</p>
+                <small style="opacity:0.65; font-size:0.7rem;">🔍 Нажмите</small>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="problemsSection">
+    <div class="container">
+        <h2 class="section-title fade-up">⚠️ Экологические проблемы</h2>
+        <div class="problems-card glass-card no-tilt fade-up" data-modal="modal-problems">
+            <div class="problems-text">
+                <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 0.8rem; display: inline-block; color:#f5d371;"></i>
+                <p>В современном мире природа сталкивается с серьёзными угрозами. <strong>Загрязнение воздуха и воды, вырубка лесов, изменение климата</strong> негативно влияют на окружающую среду.</p>
+                <div class="stat-badge"><i class="fas fa-chart-line"></i> Животные сократились на 68% за 50 лет</div>
+                <div class="stat-badge"><i class="fas fa-globe"></i> 8 млн тонн пластика в океан ежегодно</div>
+                <div class="stat-badge"><i class="fas fa-temperature-high"></i> 2024 — самый тёплый год</div>
+                <small style="display: block; margin-top: 0.8rem; opacity:0.7; font-size:0.7rem;">🔍 Нажмите для подробностей</small>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="solutionsSection">
+    <div class="container">
+        <h2 class="section-title fade-up">💚 Что мы можем сделать</h2>
+        <div class="solutions-grid fade-up">
+            <div class="solution-wrapper"><div class="solution-chip"><i class="fas fa-tint"></i> Экономить воду и энергию</div><div class="solution-tooltip"><div class="tooltip-title"><i class="fas fa-lightbulb"></i> Простые привычки</div><div class="tooltip-text">💧 Закрывайте кран при чистке зубов — экономия до 10 литров в минуту. ⚡ Выключайте свет в пустых комнатах — снижает счета на 15%.</div></div></div>
+            <div class="solution-wrapper"><div class="solution-chip"><i class="fas fa-recycle"></i> Сортировать отходы</div><div class="solution-tooltip"><div class="tooltip-title"><i class="fas fa-recycle"></i> Разделяй и властвуй</div><div class="tooltip-text">📦 Пластик, стекло, бумага и металл — в разные контейнеры. Одна тонна переработанной бумаги спасает 17 деревьев!</div></div></div>
+            <div class="solution-wrapper"><div class="solution-chip"><i class="fas fa-plastic"></i> Сокращать пластик</div><div class="solution-tooltip"><div class="tooltip-title"><i class="fas fa-shopping-bag"></i> Откажись от одноразового</div><div class="tooltip-text">🛍️ Используйте тканевые сумки и многоразовые бутылки. Пластиковый пакет разлагается 400 лет!</div></div></div>
+            <div class="solution-wrapper"><div class="solution-chip"><i class="fas fa-tree"></i> Беречь природу</div><div class="solution-tooltip"><div class="tooltip-title"><i class="fas fa-heart"></i> Любовь к лесу</div><div class="tooltip-text">🌲 Не мусорите, не разводите костры. Участвуйте в посадке деревьев — это лучший вклад в будущее.</div></div></div>
+            <div class="solution-wrapper"><div class="solution-chip"><i class="fas fa-bicycle"></i> Эко-транспорт</div><div class="solution-tooltip"><div class="tooltip-title"><i class="fas fa-bicycle"></i> Двигайся экологично</div><div class="tooltip-text">🚲 Велосипед, самокат или общественный транспорт снижают выбросы CO₂. Один день без машины экономит 5-10 кг CO₂.</div></div></div>
+            <div class="solution-wrapper"><div class="solution-chip"><i class="fas fa-hand-holding-heart"></i> Участвовать в субботниках</div><div class="solution-tooltip"><div class="tooltip-title"><i class="fas fa-users"></i> Вместе мы сила</div><div class="tooltip-text">🧹 Присоединяйтесь к уборкам парков и берегов рек. Один субботник может очистить тонны мусора!</div></div></div>
+            <div class="solution-wrapper"><div class="solution-chip"><i class="fas fa-solar-panel"></i> Возобновляемая энергия</div><div class="solution-tooltip"><div class="tooltip-title"><i class="fas fa-sun"></i> Энергия будущего</div><div class="tooltip-text">☀️ Солнечные панели окупаются за 5-7 лет. Выбирайте «зелёные» тарифы у энергокомпаний.</div></div></div>
+            <div class="solution-wrapper"><div class="solution-chip"><i class="fas fa-apple-alt"></i> Не выбрасывать еду</div><div class="solution-tooltip"><div class="tooltip-title"><i class="fas fa-utensils"></i> Бережное потребление</div><div class="tooltip-text">🥗 Планируйте меню, храните продукты правильно, замораживайте излишки. 1/3 всей еды в мире выбрасывается!</div></div></div>
+        </div>
+        <div class="fade-up" style="text-align: center; margin-top: 1.5rem;">
+            <div class="glass-card" style="display: inline-block; padding: 0.6rem 1.5rem; border-radius: 80px; font-size:0.85rem;">
+                <i class="fas fa-leaf" style="margin-right: 8px;"></i> Наведи на кнопку — узнай больше!
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="section">
+    <div class="container">
+        <!-- Здесь применён курсив к тексту "Вдохновляющие факты о природе" -->
+        <h2 class="section-title fade-up italic-facts-title">📊 Вдохновляющие факты о природе</h2>
+        <div class="facts-grid">
+            <div class="fact-card glass-card fade-up" data-modal="modal-fact1">
+                <div class="fact-number">1 000 000+</div>
+                <p>видов животных и растений находятся под угрозой исчезновения</p>
+                <small style="opacity:0.7; font-size:0.7rem;">🔍 Нажмите узнать подробнее</small>
+            </div>
+            <div class="fact-card glass-card fade-up" data-modal="modal-fact2">
+                <div class="fact-number">30%</div>
+                <p>суши и океана необходимо защитить к 2030 году для сохранения биоразнообразия</p>
+                <small style="opacity:0.7; font-size:0.7rem;">🔍 Нажмите узнать подробнее</small>
+            </div>
+            <div class="fact-card glass-card fade-up" data-modal="modal-fact3">
+                <div class="fact-number">80%</div>
+                <p>мирового биоразнообразия сохраняется на территориях коренных народов</p>
+                <small style="opacity:0.7; font-size:0.7rem;">🔍 Нажмите узнать подробнее</small>
+            </div>
+            <div class="fact-card glass-card fade-up" data-modal="modal-fact4">
+                <div class="fact-number">22 кг</div>
+                <p>CO₂ поглощает одно взрослое дерево за год — столько выделяет автомобиль за 100 км</p>
+                <small style="opacity:0.7; font-size:0.7rem;">🔍 Нажмите узнать подробнее</small>
+            </div>
+            <div class="fact-card glass-card fade-up" data-modal="modal-fact5">
+                <div class="fact-number">70%</div>
+                <p>пресной воды потребляется сельским хозяйством, из них треть тратится впустую</p>
+                <small style="opacity:0.7; font-size:0.7rem;">🔍 Нажмите узнать подробнее</small>
+            </div>
+            <div class="fact-card glass-card fade-up" data-modal="modal-fact6">
+                <div class="fact-number">50%</div>
+                <p>коралловых рифов утрачено за последние 30 лет из-за повышения температуры океана</p>
+                <small style="opacity:0.7; font-size:0.7rem;">🔍 Нажмите узнать подробнее</small>
+            </div>
+            <div class="fact-card glass-card fade-up" data-modal="modal-fact7">
+                <div class="fact-number">3 вида</div>
+                <p>каждый час исчезает с лица Земли — это 26 000 видов в год</p>
+                <small style="opacity:0.7; font-size:0.7rem;">🔍 Нажмите узнать подробнее</small>
+            </div>
+            <div class="fact-card glass-card fade-up" data-modal="modal-fact8">
+                <div class="fact-number">400 лет</div>
+                <p>разлагается обычный пластиковый пакет, а в океан попадает 8 млн тонн пластика ежегодно</p>
+                <small style="opacity:0.7; font-size:0.7rem;">🔍 Нажмите узнать подробнее</small>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p><i class="far fa-copyright"></i> 2026 | Сайт о природе — В гармонии с лесом и будущим</p>
+    <p style="margin-top: 6px; font-size: 0.7rem;"><i class="fas fa-cloud-moon"></i> Живи, вдохновляясь природой. Каждый маленький шаг создаёт большую перемену</p>
+</footer>
+
+
+<div id="modal-air" class="modal"><div class="modal-content glass-card"><div class="modal-header"><h3>🌬️ Чистый воздух</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p>Леса называют «лёгкими планеты». Одно взрослое дерево выделяет кислород для 3 человек. Тропические леса Амазонии производят 20% мирового кислорода. Загрязнение воздуха вызывает 7 миллионов преждевременных смертей в год.</p><p>📌 <strong>Что делать:</strong> Сажать деревья, поддерживать лесовосстановительные проекты, сокращать использование бумаги, меньше пользоваться личным авто.</p></div></div></div>
+<div id="modal-water" class="modal"><div class="modal-content glass-card"><div class="modal-header"><h3>💧 Пресная вода</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p>Только 2.5% воды на Земле — пресная, и лишь 1% доступен человеку. Более 2 миллиардов людей живут в странах с дефицитом воды. К 2025 году половина населения мира будет жить в условиях водного стресса.</p><p>💡 <strong>Простые решения:</strong> Закрывать кран при чистке зубов, использовать насадки-экономители, собирать дождевую воду, чинить протекающие краны.</p></div></div></div>
+<div id="modal-climate" class="modal"><div class="modal-content glass-card"><div class="modal-header"><h3>🏔️ Климат и горы</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p>Горы дают 60-80% пресной воды. Ледники тают с беспрецедентной скоростью. Альпийские ледники могут исчезнуть к 2050 году. Гималайские ледники — источник воды для 2 миллиардов человек.</p><p>🌡️ <strong>Как помочь:</strong> Сокращать углеродный след, поддерживать «зелёные» технологии, беречь энергию, выбирать эко-транспорт.</p></div></div></div>
+<div id="modal-food" class="modal"><div class="modal-content glass-card"><div class="modal-header"><h3>🌾 Пища и биоразнообразие</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p>75% мирового продовольствия обеспечивают всего 12 видов растений. Потеря опылителей угрожает 35% мирового урожая. Без пчёл и бабочек мы потеряем яблоки, арбузы, кофе и многие другие продукты.</p><p>🍎 <strong>Ваши действия:</strong> Покупать локальные продукты, сокращать пищевые отходы, сажать цветы для опылителей.</p></div></div></div>
+<div id="modal-problems" class="modal"><div class="modal-content glass-card"><div class="modal-header"><h3>⚠️ Глобальные угрозы</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p>🌍 <strong>Шокирующая статистика:</strong> Каждый год теряем 10 млн гектаров леса. Микропластик обнаружен в крови 80% людей. Уровень CO₂ превысил 420 ppm — рекорд за 3 миллиона лет. За последние 50 лет исчезло 68% популяций диких животных.</p><p>🆘 <strong>Но не всё потеряно:</strong> Переход на возобновляемую энергию ускоряется, страны берут климатические обязательства. Каждый из нас может внести вклад.</p></div></div></div>
+
+
+<div id="modal-fact1" class="modal"><div class="modal-content glass-card"><div class="modal-header"><h3>📊 Исчезновение видов</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p>По данным ООН и WWF, более 1 миллиона видов животных и растений находятся под угрозой исчезновения. Многие из них могут исчезнуть в ближайшие десятилетия. Это крупнейшее вымирание со времён динозавров. Среди наиболее уязвимых: амурский тигр (осталось около 500 особей), горная горилла (чуть более 1000), чёрный носорог (около 5000).</p><p>🌿 <strong>Как помочь:</strong> Поддерживать природоохранные организации, не покупать изделия из исчезающих видов, беречь места обитания.</p></div></div></div>
+<div id="modal-fact2" class="modal"><div class="modal-content glass-card"><div class="modal-header"><h3>📊 Защита природы</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p>Учёные и экологи призывают защитить не менее 30% суши и океана к 2030 году (цель 30×30). Сейчас под охраной находится около 17% суши и 8% океана. Достижение этой цели требует создания новых национальных парков, заповедников и морских охраняемых территорий.</p><p>🌍 <strong>Что уже сделано:</strong> За последние 10 лет площадь охраняемых территорий увеличилась на 42%.</p></div></div></div>
+<div id="modal-fact3" class="modal"><div class="modal-content glass-card"><div class="modal-header"><h3>📊 Коренные народы</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p>Территории коренных народов занимают около 28% суши, но на них сохраняется 80% мирового биоразнообразия. Их традиционные знания и устойчивое природопользование доказали свою эффективность. Поддержка прав коренных народов и их земельных прав — один из самых эффективных способов сохранения природы.</p><p>🪶 <strong>Важно:</strong> Уважать культуру и традиции коренных народов, поддерживать инициативы по сохранению их территорий.</p></div></div></div>
+<div id="modal-fact4" class="modal"><div class="modal-content glass-card"><div class="modal-header"><h3>📊 Сила одного дерева</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p>Одно взрослое дерево поглощает 22 кг CO₂ в год и выделяет достаточно кислорода для двух человек. Посадка 100 деревьев компенсирует годовое потребление энергии среднестатистического человека. Городское дерево снижает температуру вокруг себя на 5-8 градусов и экономит до 30% энергии на кондиционирование.</p><p>🌳 <strong>Что делать:</strong> Участвовать в акциях по посадке деревьев, сажать деревья у дома, заботиться о зелёных насаждениях.</p></div></div></div>
+<div id="modal-fact5" class="modal"><div class="modal-content glass-card"><div class="modal-header"><h3>📊 Вода в сельском хозяйстве</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p>Сельское хозяйство потребляет 70% всей пресной воды, доступной человечеству. Из них до 40% теряется из-за неэффективных методов орошения. Переход на капельное орошение и современные технологии может сократить потребление воды на 30-50% без потери урожайности.</p><p>💧 <strong>Ваш вклад:</strong> Выбирайте продукты местного производства, сокращайте пищевые отходы — на их производство тратится огромное количество воды.</p></div></div></div>
+<div id="modal-fact6" class="modal"><div class="modal-content glass-card"><div class="modal-header"><h3>📊 Коралловые рифы</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p>Коралловые рифы занимают менее 1% океана, но являются домом для 25% всех морских видов. За последние 30 лет мы потеряли 50% коралловых рифов из-за повышения температуры океана, закисления воды и загрязнения. Если не принять меры, к 2050 году может исчезнуть до 90% рифов.</p><p>🐠 <strong>Что делать:</strong> Сокращать углеродный след, не использовать солнцезащитные кремы с оксибензоном (убивают кораллы), поддерживать устойчивое рыболовство.</p></div></div></div>
+<div id="modal-fact7" class="modal"><div class="modal-content glass-card"><div class="modal-header"><h3>📊 Скорость вымирания</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p>Каждый час на Земле исчезает 3 вида живых организмов. Это 26 000 видов в год — в 1000 раз быстрее естественного темпа вымирания. Шестое массовое вымирание — первое, вызванное деятельностью человека.</p><p>🦋 <strong>Надежда есть:</strong> Усилия по сохранению видов приносят результаты: популяция горных горилл выросла, амурских тигров — стабилизировалась.</p></div></div></div>
+<div id="modal-fact8" class="modal"><div class="modal-content glass-card"><div class="modal-header"><h3>📊 Пластиковое загрязнение</h3><button class="modal-close">&times;</button></div><div class="modal-body"><p>Обычный пластиковый пакет разлагается 400 лет. Ежегодно в океан попадает 8-12 млн тонн пластика — это грузовик пластика каждую минуту. К 2050 году в океане будет больше пластика, чем рыбы (по весу). Микропластик уже обнаружен в крови 80% людей, в питьевой воде и даже в грудном молоке.</p><p>♻️ <strong>Что делать:</strong> Отказаться от одноразового пластика, использовать многоразовые сумки и бутылки, участвовать в уборках побережий.</p></div></div></div>
+
+<script>
+    (function() {
+        
+        const fadeElements = document.querySelectorAll('.fade-up');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+        fadeElements.forEach(el => observer.observe(el));
+
+        document.getElementById('learnMoreBtn').addEventListener('click', () => {
+            document.getElementById('valueSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        const modals = document.querySelectorAll('.modal');
+        const modalTriggers = document.querySelectorAll('[data-modal]');
+        
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if(modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        function closeModal(modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        modalTriggers.forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const modalId = trigger.getAttribute('data-modal');
+                openModal(modalId);
+            });
+        });
+        
+        modals.forEach(modal => {
+            const closeBtn = modal.querySelector('.modal-close');
+            if(closeBtn) {
+                closeBtn.addEventListener('click', () => closeModal(modal));
+            }
+            modal.addEventListener('click', (e) => {
+                if(e.target === modal) closeModal(modal);
+            });
+        });
+     
+        const goTopBtn = document.getElementById('goTopBtn');
+        window.addEventListener('scroll', () => {
+            goTopBtn.classList.toggle('show', window.scrollY > 400);
+        });
+        goTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+ 
+        const particles = ['🍃', '🌿', '✨', '🍂'];
+        let particleInterval = setInterval(() => {
+            if (window.innerWidth < 768 && Math.random() > 0.5) return;
+            const particle = document.createElement('div');
+            particle.className = 'floating-particle';
+            particle.innerHTML = particles[Math.floor(Math.random() * particles.length)];
+            particle.style.fontSize = (14 + Math.random() * 18) + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (18 + Math.random() * 18) + 's';
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 22000);
+        }, 2000);
+
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {}, 100);
+        });
+        
+        console.log('✅ Сайт оптимизирован | Только заголовок "Вдохновляющие факты о природе" выделен курсивом');
+    })();
+</script>
+</body>
+</html>
